@@ -2,78 +2,165 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Videos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #555;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        nav a:hover {
+            background-color: #007bff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        td:hover {
+            background-color: #f1f1f1;
+        }
+
+        .link-secondary {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .link-secondary:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
+<header>
+    <h1>Lista de Videos</h1>
+</header>
 
-    <h1>Videos</h1>
+<nav>
+    <a href="../index.html">Volver al Inicio</a>
+    <a href="add.html">Adicionar Video</a>
+</nav>
+
+<div class="container">
+    <h2>Videos Disponibles</h2>
 
     <table id="videos_table">
         <thead>
-        <td>Cod.</td>
+        <tr>
+            <th>Código</th>
+            <th>Título</th>
+            <th>Duración</th>
+            <th>Reproducciones</th>
+        </tr>
         </thead>
+        <tbody>
 
+        </tbody>
     </table>
 
-
-    <a href="../index.html">
-        Inicio
-    </a>
-</body>
-</html>
-
-
+    <a href="../index.html" class="link-secondary">Volver al inicio</a>
+</div>
 
 <script>
 
-    find_all_videos();
-    function find_all_videos(){
-        console.log("Listing all videos:");
+    function findAllVideos() {
+        console.log("Cargando lista de videos...");
 
-        var xhttp = new XMLHttpRequest();
-
+        const xhttp = new XMLHttpRequest();
         xhttp.open('GET', 'http://localhost:8080/videos', true);
 
         xhttp.onreadystatechange = function() {
-
             if (xhttp.readyState === XMLHttpRequest.DONE) {
-                var status = xhttp.status;
-                if (status === 0 || (status >= 200 && status < 400)) {//NO hay errores
-                    var json = JSON.parse(xhttp.responseText);
-                    createTable(json, "videos_table");
+                if (xhttp.status === 200) {
+                    const videos = JSON.parse(xhttp.responseText);
+                    populateTable(videos);
                 } else {
-                    console.log("Error");
+                    console.log("Error al cargar los videos.");
+                    alert("Error al cargar los videos.");
                 }
             }
         };
+
         xhttp.send();
     }
 
-    function createTable(json, table) {
-        var tableBody = document.getElementById(table);
+    function populateTable(videos) {
+        const tableBody = document.getElementById('videos_table').getElementsByTagName('tbody')[0];
 
-        var child = tableBody.childElementCount;
-        for ( let row = 1; row < child; row++ ) {
-            tableBody.deleteRow(child-row);
-        }
+        // Limpiar contenido previo
+        tableBody.innerHTML = "";
 
-        // Populate table
-        json.forEach((row) => {
-            var tr = document.createElement("tr");
-            Object.values(row).forEach((cell) => {
+        videos.forEach(video => {
+            const tr = document.createElement('tr');
+            const tdCode = document.createElement('td');
+            const tdTitle = document.createElement('td');
+            const tdDuration = document.createElement('td');
+            const tdViews = document.createElement('td');
 
-                var td = document.createElement("td");
-                td.textContent = cell;
-                tr.appendChild(td);
+            tdCode.textContent = video.code;
+            tdTitle.textContent = video.title;
+            tdDuration.textContent = video.duration;  // Mostrar duración
+            tdViews.textContent = video.views;       // Mostrar reproducciones
 
-            });
+            tr.appendChild(tdCode);
+            tr.appendChild(tdTitle);
+            tr.appendChild(tdDuration);
+            tr.appendChild(tdViews);
 
             tableBody.appendChild(tr);
-
         });
-
-
     }
 
+    window.onload = function() {
+        findAllVideos();
+    };
 </script>
+
+</body>
+</html>
