@@ -95,6 +95,12 @@
         <label for="title">Título:</label>
         <input type="text" id="title" name="title" placeholder="Ingrese el título del video" required><br>
 
+        <label for="duration">Duración:</label>
+        <input type="text" id="duration" name="duration" placeholder="Ingrese la duración del video (Ej: 5:30)" required><br>
+
+        <label for="views">Reproducciones:</label>
+        <input type="text" id="views" name="views" placeholder="Ingrese el número de reproducciones" required><br>
+
         <button type="button" class="btn" onclick="addVideo()">Guardar Video</button>
     </form>
 
@@ -105,15 +111,19 @@
     function addVideo() {
         const code = document.getElementById("code").value;
         const title = document.getElementById("title").value;
+        const duration = document.getElementById("duration").value;
+        const views = document.getElementById("views").value;
 
-        if (!code || !title) {
+        if (!code || !title || !duration || !views) {
             alert("Por favor, complete todos los campos.");
             return;
         }
 
         const newVideo = {
             "code": code,
-            "title": title
+            "title": title,
+            "duration": duration,
+            "views": views
         };
 
         const xmlhttp = new XMLHttpRequest();

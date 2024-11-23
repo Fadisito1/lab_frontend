@@ -95,6 +95,8 @@
         <tr>
             <th>Código</th>
             <th>Título</th>
+            <th>Duración</th>
+            <th>Reproducciones</th>
         </tr>
         </thead>
         <tbody>
@@ -131,19 +133,25 @@
     function populateTable(videos) {
         const tableBody = document.getElementById('videos_table').getElementsByTagName('tbody')[0];
 
-
+        // Limpiar contenido previo
         tableBody.innerHTML = "";
 
         videos.forEach(video => {
             const tr = document.createElement('tr');
             const tdCode = document.createElement('td');
             const tdTitle = document.createElement('td');
+            const tdDuration = document.createElement('td');
+            const tdViews = document.createElement('td');
 
             tdCode.textContent = video.code;
             tdTitle.textContent = video.title;
+            tdDuration.textContent = video.duration;  // Mostrar duración
+            tdViews.textContent = video.views;       // Mostrar reproducciones
 
             tr.appendChild(tdCode);
             tr.appendChild(tdTitle);
+            tr.appendChild(tdDuration);
+            tr.appendChild(tdViews);
 
             tableBody.appendChild(tr);
         });

@@ -88,6 +88,8 @@
         <tr>
             <th>Cod.</th>
             <th>Título</th>
+            <th>Duración</th>
+            <th>Reproducciones</th>
         </tr>
         </thead>
         <tbody>
@@ -121,27 +123,35 @@
     function createTable(videos) {
         const tableBody = document.querySelector("#videos_table tbody");
 
-
+        // Limpiar contenido previo
         tableBody.innerHTML = '';
 
         videos.forEach((video) => {
             const tr = document.createElement("tr");
 
-
+            // Código
             const tdCode = document.createElement("td");
             tdCode.textContent = video.code;
             tr.appendChild(tdCode);
 
-
+            // Título
             const tdTitle = document.createElement("td");
             tdTitle.textContent = video.title;
             tr.appendChild(tdTitle);
 
+            // Duración
+            const tdDuration = document.createElement("td");
+            tdDuration.textContent = video.duration; // Asegúrate que 'duration' esté presente en tu respuesta JSON
+            tr.appendChild(tdDuration);
+
+
+            const tdViews = document.createElement("td");
+            tdViews.textContent = video.views;
+            tr.appendChild(tdViews);
 
             tableBody.appendChild(tr);
         });
     }
-
 
     window.onload = find_all_videos;
 </script>
